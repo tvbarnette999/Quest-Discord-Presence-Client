@@ -1,3 +1,4 @@
+using System;
 using DiscordRPC;
 
 // Stores the JSON status sent by the Quest mod every time a request is made

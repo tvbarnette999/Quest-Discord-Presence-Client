@@ -1,5 +1,8 @@
 {
     "QuestAddress": "REPLACE WITH QUEST IP",
     "QuestPort": 3500,
-    "UpdateInterval": 2000
+    "UpdateInterval": 2000,
+    "Filter": true,
+    "FilterList": [
+    ]
 }

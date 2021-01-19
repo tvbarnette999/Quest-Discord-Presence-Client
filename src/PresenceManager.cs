@@ -26,6 +26,24 @@ namespace Quest_Discord_Presence_Client {
             ConnectPresence();
         }
 
+        private bool filterCheck(String s)
+        {
+            if (app.Config.FilterList == null || s == null)
+            {
+                return false;
+            }
+            Console.Out.WriteLine("Filtering");
+            foreach (String bad in app.Config.FilterList) {
+                if (s.ToLower().Contains(bad.ToLower()))
+                {
+                    
+                    Console.Out.WriteLine("FILTERED!");
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void QueryQuest() {
             Console.WriteLine("Querying Quest for presence . . .");
             while(true) {
@@ -39,7 +57,18 @@ namespace Quest_Discord_Presence_Client {
                     fetchedStatus = GetStatus();
                     
                     // Set the received presence
-                    client.SetPresence(fetchedStatus.ConvertToDiscord());
+                    RichPresence presence = fetchedStatus.ConvertToDiscord();
+                    if (app.Config.Filter.HasValue && app.Config.Filter.Value) {
+                        if (filterCheck(presence.State)) {
+                            presence.State = "";
+                        }
+
+                        if (filterCheck(presence.Details))
+                        {
+                            presence.Details = "";
+                        }
+                    }
+                    client.SetPresence(presence);
                     Console.WriteLine("Successfully fetched presence");
 
                     LastRequestStatus = ClientStatus.RequestSucceeded;
